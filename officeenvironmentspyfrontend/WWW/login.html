@@ -1,1 +1,67 @@
-<!DOCTYPE html>>
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Office Environment Spy Login</title>
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link type="text/css" rel="stylesheet" href="main.css"/>
+	<script src="frivolous.js" async></script>
+  </head>
+  <body>
+    <header class="head_and_foot">
+    </header>
+    <div id="container">
+      <!--Left side of the page (navigation and boarder)-->
+      <div class="column LR main_page l">
+	<nav class="column left_middle">
+	  <!--
+	  <ul class="menu_list l">
+            <li><a class=a_gui_element href="./index.html"><div class="menu_element l current_page">My World Home</div></a></li>
+            </ul>
+	  -->
+        </nav>
+	<div class="column LR main_page left_bottom"></div>
+      </div>
+
+      <!-- Main page contnet -->
+      <main class="inset_shadow scroll_style">
+	<div id="position_main_part_of_main">
+	  <article id="main_tag_in_main_min_height">
+	  </article>
+
+	  <!-- Top of page button at bottom of view port -->
+	  <a class="a_gui_element" id="position_to_top_of_page" onclick="toIdOnClick(this)">
+	    <div id="to_top_of_page">
+	      <div id="text_align_to_top_of_page">To Top of Page</div>
+	    </div>
+	  </a>
+	  <div id="articleTopOfPageButtonSpacer">
+	</div>	</div>
+      </main>
+
+      <!-- Right side of the page (navigation and boarder) -->
+      <div class="column LR main_page r">
+        <div class="column LR main_page right_top"></div>
+        <div class="column right_middle">
+	  <nav class="column right_middle">
+	    <!--
+            <ul class="menu_list r">
+              <li><a class=a_gui_element href="./allArticles.html"><div class="menu_element r">All Articles</div></a></li>            
+              <li><a class=a_gui_element href="./computerArchitectureArticles.html"><div class="menu_element r">Comp Arch</div></a></li>
+	      <li><a class=a_gui_element href="./operatingSystemArticles.html"><div class="menu_element r">Operating Sys</div></a></li>
+              <li><a class=a_gui_element href="./programmingArticles.html"><div class="menu_element r">Programming</div></a></li>
+	      -->
+            </ul>
+          </nav>
+	</div>
+        <div class="column LR main_page right_bottom"></div>
+      </div>
+
+    </div>
+    <footer class="head_and_foot">
+    </footer>  
+
+  </body>
+</html>
+{% endautoescape %}
