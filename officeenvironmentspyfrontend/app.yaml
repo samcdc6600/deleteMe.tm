@@ -12,6 +12,18 @@ handlers:
   static_files: main.css
   upload: main\.css
 
+- url: /border_bottom\.png
+  static_files: border_bottom.png
+  upload: border_bottom\.png
+
+- url: /border_top\.png
+  static_files: border_top.png
+  upload: border_top\.png
+
+- url: /cube\.gif
+  static_files: cube.gif
+  upload: cube\.gif
+
 - url: /bootstrap
   static_dir: bootstrap
 

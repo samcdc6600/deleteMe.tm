@@ -76,11 +76,11 @@ class MainPage(webapp2.RequestHandler):
         user = users.get_current_user()
         if user:
             url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Login'
+            url_linktext = 'Logout'
             page = "WWW/index.html"
         else:
             url = users.create_login_url(self.request.uri)
-            url_linktext = 'Logout'
+            url_linktext = 'Login'
             page = "WWW/login.html"
 
         template_values = {

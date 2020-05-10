@@ -15,11 +15,9 @@
       <!--Left side of the page (navigation and boarder)-->
       <div class="column LR main_page l">
 	<nav class="column left_middle">
-	  <!--
 	  <ul class="menu_list l">
-            <li><a class=a_gui_element href="./index.html"><div class="menu_element l current_page">My World Home</div></a></li>
-            </ul>
-	  -->
+	    <li><a class=a_gui_element href="{{ url|safe }}"><div class="menu_element l">{{ url_linktext }}</div></a></li>
+          </ul>
         </nav>
 	<div class="column LR main_page left_bottom"></div>
       </div>
@@ -59,7 +57,7 @@
       </div>
 
     </div>
-    <footer class="head_and_foot">
+    <footer class="head_and_foot foot">
     </footer>  
 
   </body>
