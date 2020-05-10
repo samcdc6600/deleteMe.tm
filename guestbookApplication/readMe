@@ -1,0 +1,3 @@
+Specify GCP project id with --project if it is not set as the default project in
+the gcloud tool.
+Our project id is: officeenvironmentspyfrontend 
