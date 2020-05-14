@@ -2,84 +2,58 @@
 {% autoescape true %}
 <html>
   <head>
-    <!-- [START css] -->
-    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap.css">
-    <link type="text/css" rel="stylesheet" href="/bootstrap/css/bootstrap-responsive.css">
-    <!-- [END css] -->
-    <style type="text/css">
-      body {
-        padding-top: 40px;
-        padding-bottom: 40px;
-        background-color: #f5f5f5;
-      }
-      blockquote {
-        margin-bottom: 10px;
-        border-left-color: #bbb;
-      }
-      form {
-        margin-top: 10px;
-      }
-      .form-signin input[type="text"] {
-        font-size: 16px;
-        height: auto;
-        margin-bottom: 15px;
-        padding: 7px 9px;
-      }
-      .row {
-        margin-left: 0px;
-        margin-top: 10px;
-        overflow: scroll;
-      }
-    </style>
+    <meta charset="utf-8">
+      <title>Office Environment Spy Loging</title>
+      <link rel="icon" href="favicon.ico" type="image/x-icon">
+	<link type="text/css" rel="stylesheet" href="main.css"/>
+	<script src="frivolous.js" async defer></script>
   </head>
   <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="brand" href="#">App Engine main</a>
-          <div class="nav-collapse collapse pull-right">
-            <a href="{{ url|safe }}" class="btn">{{ url_linktext }}</a>
-          </div>
-        </div>
+    <header class="head_and_foot">
+    </header>
+    <div id="container">
+      <!--Left side of the page (navigation and boarder)-->
+      <div class="column LR main_page l">
+	<nav class="column left_middle">
+	  <ul class="menu_list l">
+	    <li><a class=a_gui_element href="{{ url|safe }}"><div class="menu_element l">{{ url_linktext }}</div></a></li>
+          </ul>
+        </nav>
+	<div class="column LR main_page left_bottom"></div>
       </div>
-    </div>
-    <div class="container">
-      <!-- [START greetings] -->
-      {% for greeting in greetings %}
-      <div class="row">
-        {% if greeting.author %}
-          <b>{{ greeting.author.email }}
-            {% if user and user.user_id() == greeting.author.identity %}
-              (You)
-            {% endif %}
-          </b> wrote:
-        {% else %}
-          An anonymous person wrote:
-        {% endif %}
-        <blockquote>{{ greeting.content }}</blockquote>
+
+      <!-- Main page contnet -->
+      <main class="inset_shadow scroll_style">
+	<div id="position_main_part_of_main">
+	  <article id="main_tag_in_main_min_height">
+	    <div class="heading_oval">
+	      <h1 class="oval">OFFICE SPY&#U+2122</h1>
+	    </div>
+
+	  </article>
+
+	  <!-- Top of page button at bottom of view port -->
+	  <a class="a_gui_element" id="position_to_top_of_page" onclick="toIdOnClick(this)">
+	    <div id="to_top_of_page">
+	      <div id="text_align_to_top_of_page">To Top of Page</div>
+	    </div>
+	  </a>
+	  <div id="articleTopOfPageButtonSpacer">
+	  </div>
+	</div>
+      </main>
+
+      <!-- Right side of the page (navigation and boarder) -->
+      <div class="column LR main_page r">
+	<div id="map"></div>
+	<script src="gMaps.js" async defer></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJBaN1KWDUj_89Qc9ge_0OHeMlDVhFJ5g&callback=initMap" async defer>
+	</script>
       </div>
-      {% endfor %}
-      <!-- [END greetings] -->
 
-      <form action="/sign?guestbook_name={{ guestbook_name }}" method="post">
-        <div><textarea name="content" class="input-block-level" rows="3"></textarea></div>
-        <div><input type="submit" class="btn btn-large btn-primary" value="Sign Guestbook"></div>
-      </form>
-
-      <hr>
-
-      <form>Guestbook name:
-        <input value="{{ guestbook_name }}" name="guestbook_name">
-        <input type="submit" value="switch">
-      </form>
-
-      <a href="{{ url|safe }}">{{ url_linktext }}</a>
     </div>
+    <footer class="head_and_foot foot">
+    </footer>
   </body>
 </html>
 {% endautoescape %}

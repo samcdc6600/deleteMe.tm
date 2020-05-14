@@ -20,9 +20,20 @@ handlers:
   static_files: border_top.png
   upload: border_top\.png
 
-- url: /cube\.gif
-  static_files: cube.gif
-  upload: cube\.gif
+
+- url: /TypographyTimes\.ttf
+  static_files: TypographyTimes.ttf
+  upload: TypographyTimes\.ttf
+
+
+- url: /gMaps\.js
+  static_files: gMaps.js
+  upload: gMaps\.js
+
+- url: /frivolous\.js
+  static_files: frivolous.js
+  upload: frivolous\.js
+
 
 - url: /bootstrap
   static_dir: bootstrap
