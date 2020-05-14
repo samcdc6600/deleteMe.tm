@@ -1,10 +1,19 @@
-@media print{aside#debug{display:none}}@font-face{font-family:Typographytimes;src:local("Typographytimes"),local("Typographytimes"),url("TypographyTimes.ttf");font-weight:bold}body{margin:0;width:100%;min-width:800px;min-height:100%}#container{display:flex}.column{word-wrap:break-word;background:white}.column.LR{min-width:220px;max-width:220px;min-height:124px;background-color:#ffdbe8}
+@media print{aside#debug{display:none}}@font-face{font-family:Typographytimes;src:local("Typographytimes"),local("Typographytimes"),url("TypographyTimes.ttf");font-weight:bold}body{margin:0;width:100%;min-width:800px;min-height:100%}#container{display:flex}.column{word-wrap:break-word;background:white}
+.column.LR
+{
+    min-width:220px;
+/*    max-width:220px;*/
+    min-height:124px;
+    background-color:#ffdbe8
+}
 
 #map
 {
 /*    position: absolute;*/
+    min-width: 220px;
     min-height: 200px;
-    min-width: 320px;
+    height: 100%;
+    width: 100%;
 }
 
 .column.LR.main_page
@@ -12,7 +21,16 @@
     background-color:#0000CC;
 }
 
-.column.l{order:1}.column.r{order:3}
+.column.l
+{
+    order:1;
+    max-width: 220px;
+}
+.column.r
+{
+    order:3;
+    width: 100%;
+}
 
 .column.left_top
 {
@@ -100,7 +118,7 @@
 main
 {
     order:2;
-    width:100%;
+    width:56%;
     border:0;
 /*    border-top:5px solid #ce3cb7;
     border-bottom:5px solid #ce3cb7;*/
