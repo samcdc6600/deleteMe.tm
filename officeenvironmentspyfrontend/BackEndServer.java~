@@ -1,0 +1,25 @@
+import java.io.*;
+import java.net.*;
+
+public class BackEndServer
+{
+    public static void main(String[] args) throws IOException, ClassNotFoundException
+    {
+	// Port number to bind server to.
+	int portNum = 16192;
+
+	// Socket for server to listen at.
+	ServerSocket listener = new ServerSocket(portNum);
+
+	while(true)
+	    {
+		try
+		    {
+			// Accept a client connection once Server recives one.
+			Socket clientSocket = listener.accept();
+
+			// Input and output streams.
+		    }
+	    }
+    }
+}
