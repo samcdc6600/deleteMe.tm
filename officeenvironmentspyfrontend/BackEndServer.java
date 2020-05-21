@@ -6,13 +6,12 @@ public class BackEndServer
     public static void main(String[] args) throws IOException, ClassNotFoundException
     {
 	// Port number to bind server to.
-	int portNum = 8192;
-
-	// Socket for server to listen at.
-	ServerSocket listener = new ServerSocket(portNum);
+	final int portNum = 8192;
 
 	while(true)
 	    {
+		// Socket for server to listen at.
+		ServerSocket listener = new ServerSocket(portNum);
 		try
 		    {
 			// Accept a client connection once Server recives one.
@@ -22,19 +21,18 @@ public class BackEndServer
 			ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-			// Reading in Integer Object from input stream.
-			int i = (Integer) in.readObject();
+			// Read in request (it should be a string.)
+			String request = in.readObject();
 
 			// Sending response back to client
-			String response = "Integer Object Received.";
+			String response = "Request recived!";
 			out.writeObject(response);
 
 			// Outputting recived Integer Object.
-			System.out.println("Received integer: " + i);
+			System.out.println("Received request: " + request);
 			out.close();
 			in.close();
 			clientSocket.close();
-			break;
 		    }
 		finally
 		    {		// Close server socket.
