@@ -6,7 +6,7 @@ public class BackEndServer
     public static void main(String[] args) throws IOException, ClassNotFoundException
     {
 	// Port number to bind server to.
-	int portNum = 16192;
+	int portNum = 8192;
 
 	// Socket for server to listen at.
 	ServerSocket listener = new ServerSocket(portNum);

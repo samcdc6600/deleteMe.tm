@@ -38,6 +38,10 @@ handlers:
 - url: /bootstrap
   static_dir: bootstrap
 
+- url: /FrontEndClient\.java
+  static_files: FrontEndClient.java
+  upload: FrontEndClient\.java
+
 - url: /.*
   script: main.app
 # [END handlers]
