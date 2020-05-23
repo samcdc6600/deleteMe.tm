@@ -115,18 +115,31 @@ class MainPage(webapp2.RequestHandler):
 
     def requestResults(self):
         HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
-        PORT = 8192
+        PORT_NUM = 8192
 
         client_socket = socket.socket()
-        client_socket.connect((HOST, PORT))
+        client_socket.connect((HOST, PORT_NUM))
 
-        message = "cats"
+        message = "Get data"
 
-#        while message.lower().strip() != 'bye':
-	client_socket.send(message.encode())
-	ret = client_socket.recv(1024)
+        client_socket.send(message.encode())
+        data = client_socket.recv(1024).decode()
+
         client_socket.close()
-        return ret
+        return data
+#         HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+#         PORT = 8192
+
+#         client_socket = socket.socket()
+#         client_socket.connect((HOST, PORT))
+
+#         message = "cats"
+
+# #        while message.lower().strip() != 'bye':
+# 	client_socket.send(message.encode())
+# 	ret = client_socket.recv(1024)
+#         client_socket.close()
+#         return ret
 # [END main_page]
 
 

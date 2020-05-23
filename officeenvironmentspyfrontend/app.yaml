@@ -20,11 +20,9 @@ handlers:
   static_files: border_top.png
   upload: border_top\.png
 
-
 - url: /TypographyTimes\.ttf
   static_files: TypographyTimes.ttf
   upload: TypographyTimes\.ttf
-
 
 - url: /gMaps\.js
   static_files: gMaps.js
@@ -34,13 +32,8 @@ handlers:
   static_files: frivolous.js
   upload: frivolous\.js
 
-
 - url: /bootstrap
   static_dir: bootstrap
-
-- url: /FrontEndClient\.class
-  static_files: FrontEndClient.class
-  upload: /tmp/FrontEndClient\.class
 
 - url: /.*
   script: main.app
