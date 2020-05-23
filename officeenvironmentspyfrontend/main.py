@@ -23,6 +23,8 @@ from google.appengine.ext import ndb
 
 import jinja2
 import webapp2
+import subprocess               # For running shell commands
+import socket
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -31,6 +33,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [END imports]
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
+RW_DIR = "/tmp/"                # Other directories are write protected!
+RESPONSE_FILE_NAME = "serverData.csv"
 
 
 # We set a parent key on the 'Greetings' to ensure that they are all
@@ -72,12 +76,26 @@ class MainPage(webapp2.RequestHandler):
         greetings = greetings_query.fetch(10)
 
         page = "login.html"
+        requestResultsText = "Nothing to see here"
 
         user = users.get_current_user()
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
             page = "WWW/index.html"
+            #requestResultsText = subprocess.check_output(["java FrontEndClient", "get office stats"])
+            #requestResultsText = subprocess.check_output("uname -a", stderr=subprocess.STDOUT, shell=True)
+            #requestResultsText = run(["java", "FrontEndClient"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            #requestResultsText = os.system("uname -a")
+            #            requestResultsText = os.system("java /tmp/FrontEndClient catsh")
+            #requestResultsText = os.system("java /tmp/FrontEndClient catsh")
+            # requestResultsText = subprocess.Popen(["java", "/tmp/FrontEndClient", "catsh"],
+            #                                       stdout=subprocess.PIPE,
+            #                                       stderr=subprocess.STDOUT)
+            #os.system("java /tmp/FrontEndClient catsh")
+            #open(RW_DIR + RESPONSE_FILE_NAME, "w").write("This is secret")
+            #requestResultsText = open(RW_DIR + "FrontEndClient", "r").read()
+            requestResultsText = self.requestResults()
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
@@ -89,10 +107,26 @@ class MainPage(webapp2.RequestHandler):
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
             'url_linktext': url_linktext,
+            'requestResultsText': requestResultsText,
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)
         self.response.write(template.render(template_values))
+
+    def requestResults(self):
+        HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+        PORT = 8192
+
+        client_socket = socket.socket()
+        client_socket.connect((HOST, PORT))
+
+        message = "cats"
+
+#        while message.lower().strip() != 'bye':
+	client_socket.send(message.encode())
+	ret = client_socket.recv(1024)
+        client_socket.close()
+        return ret
 # [END main_page]
 
 
@@ -120,6 +154,30 @@ class Guestbook(webapp2.RequestHandler):
         query_params = {'guestbook_name': guestbook_name}
         self.redirect('/?' + urllib.urlencode(query_params))
 # [END guestbook]
+
+
+# This code is taken from the following thread: https://stackoverflow.com/questions/40590192/getting-an-error-attributeerror-module-object-has-no-attribute-run-while
+def run(*popenargs, **kwargs):
+    input = kwargs.pop("input", None)
+    check = kwargs.pop("handle", False)
+
+    if input is not None:
+        if 'stdin' in kwargs:
+            raise ValueError('stdin and input arguments may not both be used.')
+        kwargs['stdin'] = subprocess.PIPE
+
+    process = subprocess.Popen(*popenargs, **kwargs)
+    try:
+        stdout, stderr = process.communicate(input)
+    except:
+        process.kill()
+        process.wait()
+        raise
+    retcode = process.poll()
+    if check and retcode:
+        raise subprocess.CalledProcessError(
+            retcode, process.args, output=stdout, stderr=stderr)
+    return retcode, stdout, stderr
 
 
 # [START app]

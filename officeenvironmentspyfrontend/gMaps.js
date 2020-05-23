@@ -3,8 +3,8 @@ var map;
 function initMap()
 {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 17,
-	center: {lat: -34.397, lng: 150.644},
+        zoom: 10,
+	center: {lat: -34.290, lng: 150.501},
 	mapTypeId: 'satellite'
     });
 //    map.setTilt(45);
@@ -24,8 +24,8 @@ function setMarker(markerLocation) {
 
 // Add markers to map
 function setMarkers() {
-    local1 = new google.maps.LatLng(-34.397, 150.644);
-    local2 = new google.maps.LatLng(-34.290, 150.500);
+    local1 = new google.maps.LatLng(-34.391, 150.501);
+    local2 = new google.maps.LatLng(-34.289, 150.5005);
     setMarker(local1);
     setMarker(local2);
 }

@@ -19,15 +19,33 @@ public class FrontEndClient
 		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-		out.writeObject(args); // Send our message out over the wire (maybe we'll get tapped by a vampire.)
+		out.writeObject(msg); // Send our message out over the wire (maybe we'll get tapped by a vampire.)
 		// Get reply
 		String response = (String) in.readObject();
 		// Output reply
-		System.out.println("Server message: " + response);
+		final String rWDir = new String("/tmp/");
+		final String responseFileName = new String(rWDir + "serverData.csv");
+		writeFile(responseFileName, response);
+		System.out.println("cats");
 	    }
 	else
 	    {
 		System.err.println("Error: 0 arguments given but at least 1 required!");
+	    }
+    }
+
+    public static void writeFile(final String fileName, final String data)
+    {
+	try
+	    {
+		FileWriter fileObject = new FileWriter(fileName);
+		fileObject.write(data);
+		fileObject.close();
+	    }
+	catch(IOException e)
+	    {
+		System.out.println("Recived exception: " + e);
+		e.printStackTrace();
 	    }
     }
 }

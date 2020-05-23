@@ -21,15 +21,11 @@ public class BackEndServer
 			ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
 			ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 
-			// Read in request (it should be a string.)
-			String request = in.readObject();
-
+			// Read in and handle request (it should be a string.)
+			String response = handleRequest((String)in.readObject());
 			// Sending response back to client
-			String response = "Request recived!";
 			out.writeObject(response);
 
-			// Outputting recived Integer Object.
-			System.out.println("Received request: " + request);
 			out.close();
 			in.close();
 			clientSocket.close();
@@ -38,6 +34,18 @@ public class BackEndServer
 		    {		// Close server socket.
 			listener.close();
 		    }
+	    }
+    }
+
+    private static String handleRequest(final String request)
+    {
+	System.out.println(request);
+	switch(request)
+	    {
+	    case "get office stats":
+		return new String("these are the stats");
+	    default:
+		return new String("Error: request not valid");
 	    }
     }
 }

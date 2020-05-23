@@ -38,9 +38,9 @@ handlers:
 - url: /bootstrap
   static_dir: bootstrap
 
-- url: /FrontEndClient\.java
-  static_files: FrontEndClient.java
-  upload: FrontEndClient\.java
+- url: /FrontEndClient\.class
+  static_files: FrontEndClient.class
+  upload: /tmp/FrontEndClient\.class
 
 - url: /.*
   script: main.app
