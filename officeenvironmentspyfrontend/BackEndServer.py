@@ -16,7 +16,7 @@ def backendServer():
         print("Connection from: " + str(address))
     
         while True:
-            data = conn.recv(1024).decode()
+            data = conn.recv(10240).decode()
             if not data:
                 break
             print("Recived: request (" + data + ")") 
@@ -29,7 +29,7 @@ def backendServer():
                 print("hey")
                 file = opener.open(url)
                 print("hey")
-                conn.send(file.read().replace('\n', '@SPECIAL@'))  # send data to the client
+                conn.send(file.read().replace('\n', '^@^'))  # send data to the client
 #                conn.send("Cats")  # send data to the client
                 print("hey")
             else:

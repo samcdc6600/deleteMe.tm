@@ -25,6 +25,7 @@ import jinja2
 import webapp2
 import subprocess               # For running shell commands
 import socket
+import csv
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -76,26 +77,36 @@ class MainPage(webapp2.RequestHandler):
         greetings = greetings_query.fetch(10)
 
         page = "login.html"
-        requestResultsText = "Nothing to see here"
+        requestResultsText = 'null'
+        requestResultsTextOffice1 = "Nothing to see here"
+        tableHeader = ""
+        tableRow = ""
 
         user = users.get_current_user()
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
             page = "WWW/index.html"
-            #requestResultsText = subprocess.check_output(["java FrontEndClient", "get office stats"])
-            #requestResultsText = subprocess.check_output("uname -a", stderr=subprocess.STDOUT, shell=True)
-            #requestResultsText = run(["java", "FrontEndClient"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            #requestResultsText = os.system("uname -a")
-            #            requestResultsText = os.system("java /tmp/FrontEndClient catsh")
-            #requestResultsText = os.system("java /tmp/FrontEndClient catsh")
-            # requestResultsText = subprocess.Popen(["java", "/tmp/FrontEndClient", "catsh"],
-            #                                       stdout=subprocess.PIPE,
-            #                                       stderr=subprocess.STDOUT)
-            #os.system("java /tmp/FrontEndClient catsh")
-            #open(RW_DIR + RESPONSE_FILE_NAME, "w").write("This is secret")
-            #requestResultsText = open(RW_DIR + "FrontEndClient", "r").read()
-            requestResultsText = self.requestResults()
+            requestResults = self.requestResults()
+            requestResultsRows = requestResults.split("^@^");
+            lineCount = 0
+            for row in requestResultsRows:
+                if lineCount == 0:
+                    tableHeaderCells = row.split(",")
+                    for cell in tableHeaderCells:
+                        tableHeader += "<th scope=\"col\">" + cell  + "</th>"
+                    lineCount += 1
+                else:
+                    lineCount += 1
+            # for row in :
+            #     if lineCount == 0:
+            #         # tableHeader += "<th scope=\"col\">" +  + "</th>"
+            #         lineCount += 1
+            #     else:
+            #         lineCount += 1
+                    
+            requestResultsTextOffice1 = requestResults
+            
         else:
             url = users.create_login_url(self.request.uri)
             url_linktext = 'Login'
@@ -106,8 +117,11 @@ class MainPage(webapp2.RequestHandler):
             'greetings': greetings,
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
+            'requestResults': requestResults,
             'url_linktext': url_linktext,
-            'requestResultsText': requestResultsText,
+            'requestResultsTextOffice1': requestResultsTextOffice1,
+            'tableHeader': tableHeader,
+            'tableRow': tableRow,
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)
@@ -124,7 +138,7 @@ class MainPage(webapp2.RequestHandler):
         request = "SITE STATS"
 
         client_socket.send(request.encode())
-        data = client_socket.recv(1024).decode()
+        data = client_socket.recv(10240).decode()
 
         client_socket.close()
         return data
