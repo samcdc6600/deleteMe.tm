@@ -90,13 +90,21 @@ class MainPage(webapp2.RequestHandler):
             requestResults = self.requestResults()
             requestResultsRows = requestResults.split("^@^");
             lineCount = 0
-            for row in requestResultsRows:
+            for row in requestResultsRows[:-1]:
                 if lineCount == 0:
                     tableHeaderCells = row.split(",")
+                    count = 0
                     for cell in tableHeaderCells:
-                        tableHeader += "<th scope=\"col\">" + cell  + "</th>"
+                        if count != 0:
+                            tableHeader += "<th scope=\"col\">" + cell  + "</th>\n"
+                        count += 1
                     lineCount += 1
                 else:
+                    tableRowCells  = row.split(",")
+                    tableRow += "<tr>"
+                    for cell in tableRowCells:
+                        tableRow += "<td scope=\"col\">" + cell  + "</td>\n"
+                    tableRow += "</tr>"
                     lineCount += 1
             # for row in :
             #     if lineCount == 0:

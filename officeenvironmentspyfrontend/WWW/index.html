@@ -31,13 +31,18 @@
 	    </div>
 
 
-	    <p>
-	      <table>
-	    	<tr>
-	    	{{ tableHeader }}
-	    </tr>
+
+	    <table>
+	      <tr>
+		<th scope="col"><h1>Office Site 1</h1></th>
+	      </tr>
+	      <tr>
+		<th scope="col">date</th>
+		{{ tableHeader | safe }}
+	      </tr>
+	      {{ tableRow | safe }}
 	    </table>
-	    </p>
+
 
 	    </article>
 
