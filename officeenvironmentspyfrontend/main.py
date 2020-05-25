@@ -81,6 +81,7 @@ class MainPage(webapp2.RequestHandler):
         requestResultsTextOffice1 = "Nothing to see here"
         tableHeader = ""
         tableRow = ""
+        requestResults = ""
 
         user = users.get_current_user()
         if user:
