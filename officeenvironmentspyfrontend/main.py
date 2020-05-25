@@ -114,15 +114,16 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
     def requestResults(self):
-        HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+        #HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+        HOST = "ec2-100-26-244-233.compute-1.amazonaws.com"
         PORT_NUM = 8192
 
         client_socket = socket.socket()
         client_socket.connect((HOST, PORT_NUM))
 
-        message = "Get data"
+        request = "SITE STATS"
 
-        client_socket.send(message.encode())
+        client_socket.send(request.encode())
         data = client_socket.recv(1024).decode()
 
         client_socket.close()
