@@ -82,18 +82,22 @@ class MainPage(webapp2.RequestHandler):
         tableHeader = ""
         tableRow = ""
         requestResults = ""
+        loggedInUser = ""
+        administrationURL = ""
+        
 
         user = users.get_current_user()
 
+        # Used for accessing user id (can also be used for storing user id)
         class SuperUser(db.Model):
             USER = db.StringProperty(required=True)
-
-        superUser = SuperUser(USER=str(user))
-#        superUser.put()
-        user2 = superUser.get_by_id(5632499082330112).USER
         
         
         if user:
+            if str(user) == SuperUser(USER=str(user)).get_by_id(5632499082330112).USER:
+                 loggedInUser = " root user " + str(user)
+            else:
+                loggedInUser = " user " + str(user)
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
             page = "WWW/index.html"
@@ -139,7 +143,8 @@ class MainPage(webapp2.RequestHandler):
             'url_linktext': url_linktext,
             'tableHeader': tableHeader,
             'tableRow': tableRow,
-            'user2': user2
+            'loggedInUser' : loggedInUser
+            'administrationURL' : administrationURL
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)

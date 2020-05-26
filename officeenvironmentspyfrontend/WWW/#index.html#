@@ -16,7 +16,7 @@
       <div class="column LR main_page l">
 	<nav class="column left_middle">
 	  <ul class="menu_list l">
-	    <li><h1>Logged in as user {{ loggedInUser }}</h1>
+	    <li><h1>Logged in as {{ loggedInUser }}</h1>
 	    <li><a class=a_gui_element href="{{ url|safe }}"><div class="menu_element l">{{ url_linktext }}</div></a></li>
           </ul>
         </nav>

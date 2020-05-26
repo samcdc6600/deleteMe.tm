@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+f#!/usr/bin/env python
 
 # Copyright 2016 Google Inc.
 #
@@ -20,9 +20,13 @@ import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.ext import db
 
 import jinja2
 import webapp2
+import subprocess               # For running shell commands
+import socket
+import csv
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -31,6 +35,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 # [END imports]
 
 DEFAULT_GUESTBOOK_NAME = 'default_guestbook'
+RW_DIR = "/tmp/"                # Other directories are write protected!
+RESPONSE_FILE_NAME = "serverData.csv"
 
 
 # We set a parent key on the 'Greetings' to ensure that they are all
@@ -72,15 +78,59 @@ class MainPage(webapp2.RequestHandler):
         greetings = greetings_query.fetch(10)
 
         page = "login.html"
+        requestResultsText = 'null'
+        tableHeader = ""
+        tableRow = ""
+        requestResults = ""
+        loggedInUser = ""
+        
 
         user = users.get_current_user()
+
+        # Used for accessing user id (can also be used for storing user id)
+        class SuperUser(db.Model):
+            USER = db.StringProperty(required=True)
+        
+        
         if user:
+            if str(user) == SuperUser(USER=str(user)).get_by_id(5632499082330112).USER:
+                 loggedInUser = "(root) " + str(user)
+            else:
+                loggedInUser = str(user)
             url = users.create_logout_url(self.request.uri)
-            url_linktext = 'Login'
+            url_linktext = 'Logout'
             page = "WWW/index.html"
+            requestResults = self.requestResults()
+            requestResultsRows = requestResults.split("^@^");
+            lineCount = 0
+            for row in requestResultsRows[:-1]:
+                if lineCount == 0:
+                    tableHeaderCells = row.split(",")
+                    count = 0
+                    for cell in tableHeaderCells:
+                        if count != 0:
+                            tableHeader += "<th scope=\"col\">" + cell  + "</th>\n"
+                        count += 1
+                    lineCount += 1
+                else:
+                    tableRowCells  = row.split(",")
+                    tableRow += "<tr>"
+                    for cell in tableRowCells:
+                        tableRow += "<td scope=\"col\">" + cell  + "</td>\n"
+                    tableRow += "</tr>"
+                    lineCount += 1
+            # for row in :
+            #     if lineCount == 0:
+            #         # tableHeader += "<th scope=\"col\">" +  + "</th>"
+            #         lineCount += 1
+            #     else:
+            #         lineCount += 1
+                    
+            requestResultsTextOffice1 = requestResults
+            
         else:
             url = users.create_login_url(self.request.uri)
-            url_linktext = 'Logout'
+            url_linktext = 'Login'
             page = "WWW/login.html"
 
         template_values = {
@@ -88,11 +138,44 @@ class MainPage(webapp2.RequestHandler):
             'greetings': greetings,
             'guestbook_name': urllib.quote_plus(guestbook_name),
             'url': url,
+            'requestResults': requestResults,
             'url_linktext': url_linktext,
+            'tableHeader': tableHeader,
+            'tableRow': tableRow,
+            'loggedInUser' : loggedInUser
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)
         self.response.write(template.render(template_values))
+
+    def requestResults(self):
+        #HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+        HOST = "ec2-100-26-244-233.compute-1.amazonaws.com"
+        PORT_NUM = 8192
+
+        client_socket = socket.socket()
+        client_socket.connect((HOST, PORT_NUM))
+
+        request = "SITE STATS"
+
+        client_socket.send(request.encode())
+        data = client_socket.recv(10240).decode()
+
+        client_socket.close()
+        return data
+#         HOST = "ec2-52-90-192-10.compute-1.amazonaws.com"
+#         PORT = 8192
+
+#         client_socket = socket.socket()
+#         client_socket.connect((HOST, PORT))
+
+#         message = "cats"
+
+# #        while message.lower().strip() != 'bye':
+# 	client_socket.send(message.encode())
+# 	ret = client_socket.recv(1024)
+#         client_socket.close()
+#         return ret
 # [END main_page]
 
 
@@ -120,6 +203,30 @@ class Guestbook(webapp2.RequestHandler):
         query_params = {'guestbook_name': guestbook_name}
         self.redirect('/?' + urllib.urlencode(query_params))
 # [END guestbook]
+
+
+# This code is taken from the following thread: https://stackoverflow.com/questions/40590192/getting-an-error-attributeerror-module-object-has-no-attribute-run-while
+def run(*popenargs, **kwargs):
+    input = kwargs.pop("input", None)
+    check = kwargs.pop("handle", False)
+
+    if input is not None:
+        if 'stdin' in kwargs:
+            raise ValueError('stdin and input arguments may not both be used.')
+        kwargs['stdin'] = subprocess.PIPE
+
+    process = subprocess.Popen(*popenargs, **kwargs)
+    try:
+        stdout, stderr = process.communicate(input)
+    except:
+        process.kill()
+        process.wait()
+        raise
+    retcode = process.poll()
+    if check and retcode:
+        raise subprocess.CalledProcessError(
+            retcode, process.args, output=stdout, stderr=stderr)
+    return retcode, stdout, stderr
 
 
 # [START app]
