@@ -20,6 +20,7 @@ import urllib
 
 from google.appengine.api import users
 from google.appengine.ext import ndb
+from google.appengine.ext import db
 
 import jinja2
 import webapp2
@@ -78,12 +79,20 @@ class MainPage(webapp2.RequestHandler):
 
         page = "login.html"
         requestResultsText = 'null'
-        requestResultsTextOffice1 = "Nothing to see here"
         tableHeader = ""
         tableRow = ""
         requestResults = ""
 
         user = users.get_current_user()
+
+        class SuperUser(db.Model):
+            USER = db.StringProperty(required=True)
+
+        superUser = SuperUser(USER=str(user))
+#        superUser.put()
+        user2 = superUser.get_by_id(5632499082330112).USER
+        
+        
         if user:
             url = users.create_logout_url(self.request.uri)
             url_linktext = 'Logout'
@@ -128,9 +137,9 @@ class MainPage(webapp2.RequestHandler):
             'url': url,
             'requestResults': requestResults,
             'url_linktext': url_linktext,
-            'requestResultsTextOffice1': requestResultsTextOffice1,
             'tableHeader': tableHeader,
             'tableRow': tableRow,
+            'user2': user2
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)
