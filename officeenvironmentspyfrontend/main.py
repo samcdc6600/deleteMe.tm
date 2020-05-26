@@ -83,7 +83,6 @@ class MainPage(webapp2.RequestHandler):
         tableRow = ""
         requestResults = ""
         loggedInUser = ""
-        administrationURL = ""
         
 
         user = users.get_current_user()
@@ -144,7 +143,6 @@ class MainPage(webapp2.RequestHandler):
             'tableHeader': tableHeader,
             'tableRow': tableRow,
             'loggedInUser' : loggedInUser
-            'administrationURL' : administrationURL
         }
 
         template = JINJA_ENVIRONMENT.get_template(page)
